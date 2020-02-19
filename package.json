@@ -1,10 +1,10 @@
 {
-  "name": "com.viauco.canvas-camera",
+  "name": "com.viauco.canvas.camera",
   "version": "1.2.0",
   "description": "A Cordova plugin to display video from the device's camera into an HTML canvas element.",
   "repository": "https://github.com/viauco/cordova-canvas-camera.git",
   "cordova": {
-    "id": "com.viauco.canvas-camera",
+    "id": "com.viauco.canvas.camera",
     "platforms": [
       "android",
       "ios"

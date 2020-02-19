@@ -62,7 +62,12 @@ public class CanvasCamera extends CordovaPlugin implements CanvasCameraInterface
     private static final int SEC_CAMERA_POSITION = 3;
 
     private final static String[] FILENAMES = {"fullsize", "thumbnail"};
-    private final static String[] PERMISSIONS = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private final static String[] PERMISSIONS = {
+        Manifest.permission.CAMERA,
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.READ_EXTERNAL_STORAGE, 
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     protected int mFps;
     protected int mWidth;
@@ -137,16 +142,18 @@ public class CanvasCamera extends CordovaPlugin implements CanvasCameraInterface
                                 try {
                                     fullsize.put("data", fullsizeDataToB64);
                                 } catch (JSONException e) {
-                                    if (LOGGING)
+                                    if (LOGGING) {
                                         Log.e(TAG, "Cannot put data.output.images.fullsize.data  into JSON result : " + e.getMessage());
+                                    }
                                 }
                             }
                             if ("file".equals(mUse) && saveImage(fullsizeData, files.get("fullsize"))) {
                                 try {
                                     fullsize.put("file", files.get("fullsize").getPath());
                                 } catch (JSONException e) {
-                                    if (LOGGING)
+                                    if (LOGGING) {
                                         Log.e(TAG, "Cannot put data.output.images.fullsize.path into JSON result : " + e.getMessage());
+                                    }
                                 }
                             }
 
@@ -160,27 +167,31 @@ public class CanvasCamera extends CordovaPlugin implements CanvasCameraInterface
                                 try {
                                     fullsize.put("rotation", displayOrientation);
                                 } catch (JSONException e) {
-                                    if (LOGGING)
+                                    if (LOGGING) {
                                         Log.e(TAG, "Cannot put data.output.images.fullsize.rotation into JSON result : " + e.getMessage());
+                                    }
                                 }
 
                                 try {
                                     fullsize.put("orientation", getCurrentOrientationToString());
                                 } catch (JSONException e) {
-                                    if (LOGGING)
+                                    if (LOGGING) {
                                         Log.e(TAG, "Cannot put data.output.images.fullsize.orientation into JSON result : " + e.getMessage());
+                                    }
                                 }
 
                                 try {
                                     fullsize.put("timestamp", (new java.util.Date()).getTime());
                                 } catch (JSONException e) {
-                                    if (LOGGING)
+                                    if (LOGGING) {
                                         Log.e(TAG, "Cannot put data.output.images.fullsize.timestamp into JSON result : " + e.getMessage());
+                                    }
                                 }
 
                             } catch (JSONException e) {
-                                if (LOGGING)
+                                if (LOGGING) {
                                     Log.e(TAG, "Cannot put data.output.images.fullsize into JSON result : " + e.getMessage());
+                                }
                             }
 
                             if (mHasThumbnail) {
@@ -411,6 +422,7 @@ public class CanvasCamera extends CordovaPlugin implements CanvasCameraInterface
         mCurrentCallbackContext = callbackContext;
 
         if (cordova.hasPermission(this, Manifest.permission.CAMERA) &&
+                cordova.hasPermission(this, Manifest.permission.RECORD_AUDIO) &&
                 cordova.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) &&
                 cordova.hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             if ("startCapture".equals(action)) {
@@ -421,7 +433,8 @@ public class CanvasCamera extends CordovaPlugin implements CanvasCameraInterface
                     }
                 });
                 return true;
-            } else if ("stopCapture".equals(action)) {
+            } 
+            else if ("stopCapture".equals(action)) {
                 if (LOGGING) Log.i(TAG, "Starting async stopCapture thread...");
                 mActivity.runOnUiThread(new Runnable() {
                     public void run() {
@@ -429,7 +442,8 @@ public class CanvasCamera extends CordovaPlugin implements CanvasCameraInterface
                     }
                 });
                 return true;
-            } else if ("flashMode".equals(action)) {
+            } 
+            else if ("flashMode".equals(action)) {
                 if (LOGGING) Log.i(TAG, "Starting async flashMode thread...");
                 mActivity.runOnUiThread(new Runnable() {
                     public void run() {
@@ -437,7 +451,8 @@ public class CanvasCamera extends CordovaPlugin implements CanvasCameraInterface
                     }
                 });
                 return true;
-            } else if ("cameraPosition".equals(action)) {
+            } 
+            else if ("cameraPosition".equals(action)) {
                 if (LOGGING) Log.i(TAG, "Starting async cameraPosition thread...");
                 mActivity.runOnUiThread(new Runnable() {
                     public void run() {
@@ -446,20 +461,24 @@ public class CanvasCamera extends CordovaPlugin implements CanvasCameraInterface
                 });
                 return true;
             }
-        } else {
+        } 
+        else {
             if ("startCapture".equals(action)) {
                 deferPluginResultCallback(mCurrentCallbackContext);
                 cordova.requestPermissions(this, SEC_START_CAPTURE, PERMISSIONS);
                 return true;
-            } else if ("stopCapture".equals(action)) {
+            } 
+            else if ("stopCapture".equals(action)) {
                 deferPluginResultCallback(mCurrentCallbackContext);
                 cordova.requestPermission(this, SEC_STOP_CAPTURE, Manifest.permission.CAMERA);
                 return true;
-            } else if ("flashMode".equals(action)) {
+            } 
+            else if ("flashMode".equals(action)) {
                 deferPluginResultCallback(mCurrentCallbackContext);
                 cordova.requestPermission(this, SEC_FLASH_MODE, Manifest.permission.CAMERA);
                 return true;
-            } else if ("cameraPosition".equals(action)) {
+            } 
+            else if ("cameraPosition".equals(action)) {
                 deferPluginResultCallback(mCurrentCallbackContext);
                 cordova.requestPermission(this, SEC_CAMERA_POSITION, Manifest.permission.CAMERA);
                 return true;
