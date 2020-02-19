@@ -13,8 +13,7 @@
     <author>VirtuoWorks</author>
 
     <js-module name="CanvasCamera" src="www/CanvasCamera.js">
-        <clobbers target="CanvasCamera" />
-        <clobbers target="plugin.CanvasCamera" />
+      <clobbers target="CanvasCamera" />
     </js-module>
 
     <platform name="ios">
